@@ -35,6 +35,15 @@ jobs:
           cp icon.png resources/icon.png
           npm install @capacitor/assets --save-dev
           npx capacitor-assets generate --android
+          - name: Embed fonts
+        run: |
+          npm install @fontsource/plus-jakarta-sans @fontsource/hind-siliguri
+          mkdir -p fonts
+          for w in 400 600 700; do
+            cp node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-$w-normal.woff2 fonts/
+            cp node_modules/@fontsource/hind-siliguri/files/hind-siliguri-latin-$w-normal.woff2 fonts/
+            cp node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-$w-normal.woff2 fonts/
+          done
       - name: Sync web assets
         run: npx cap sync android
 
