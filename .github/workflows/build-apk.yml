@@ -43,10 +43,12 @@ jobs:
             cp node_modules/@fontsource/hind-siliguri/files/hind-siliguri-latin-$w-normal.woff2 fonts/
             cp node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-$w-normal.woff2 fonts/
           done
-- name: Prepare www
-  run: |
-    mkdir -p www
-    cp index.html www/
+      - name: Prepare www
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp -r fonts www/ || true
+
       - name: Sync web files
         run: npx cap sync android
 
