@@ -29,7 +29,12 @@ jobs:
       - name: Add Android platform
         run: |
           if [ ! -d android ]; then npx cap add android; fi
-
+      - name: Generate icons
+        run: |
+          mkdir -p resources
+          cp icon.png resources/icon.png
+          npm install @capacitor/assets --save-dev
+          npx capacitor-assets generate --android
       - name: Sync web assets
         run: npx cap sync android
 
