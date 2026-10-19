@@ -1,9 +1,9 @@
 name: Build APK
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main, master]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -22,20 +22,19 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      - name: Prepare www folder
-        run: |
-          mkdir -p www
-          cp index.html www/
+
       - name: Add Android platform
         run: |
           if [ ! -d android ]; then npx cap add android; fi
+
       - name: Generate icons
         run: |
           mkdir -p resources
           cp icon.png resources/icon.png
           npm install @capacitor/assets --save-dev
           npx capacitor-assets generate --android
-          - name: Embed fonts
+
+      - name: Embed fonts
         run: |
           npm install @fontsource/plus-jakarta-sans @fontsource/hind-siliguri
           mkdir -p fonts
@@ -44,7 +43,8 @@ jobs:
             cp node_modules/@fontsource/hind-siliguri/files/hind-siliguri-latin-$w-normal.woff2 fonts/
             cp node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-$w-normal.woff2 fonts/
           done
-      - name: Sync web assets
+
+      - name: Sync web files
         run: npx cap sync android
 
       - name: Build debug APK
@@ -53,7 +53,8 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: Arumatics-Study-Hub-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
