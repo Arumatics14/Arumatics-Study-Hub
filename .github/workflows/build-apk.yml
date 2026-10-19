@@ -23,6 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Capacitor App plugin (back button)
+        run: |
+          CORE=$(node -p "require('./node_modules/@capacitor/core/package.json').version")
+          MAJOR=${CORE%%.*}
+          npm install "@capacitor/app@^${MAJOR}.0.0"
+
       - name: Add Android platform
         run: |
           if [ ! -d android ]; then npx cap add android; fi
